@@ -1,0 +1,40 @@
+{
+  "compileOnSave": false,
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": false,
+    "jsx": "react",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "skipDefaultLibCheck": true,
+    "strictPropertyInitialization": false,
+    "strict": false,
+    "strictBindCallApply": false,
+    "strictFunctionTypes": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noStrictGenericChecks": true,
+    "alwaysStrict": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "ES2022"
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}

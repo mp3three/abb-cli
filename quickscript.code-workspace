@@ -1,0 +1,112 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Attach to script",
+        "type": "node",
+        "request": "attach",
+        "port": 37373
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      // better comments
+      "aaron-bond.better-comments",
+      // eslint
+      "dbaeumer.vscode-eslint",
+      // material icon theme
+      "pkief.material-icon-theme",
+      // code formatting
+      "esbenp.prettier-vscode",
+      // highlighter for specific comment strings
+      "wayou.vscode-todo-highlight",
+      // import sorting
+      "nsoult.typescript-imports-sort",
+      // shell check
+      "timonwong.shellcheck",
+      // import sorting
+      // works differently from eslint, use both for 100% consistency
+      "nsoult.typescript-imports-sort"
+    ],
+    "unwantedRecommendations": []
+  },
+  "settings": {
+    "material-icon-theme.folders.associations": {},
+    "material-icon-theme.files.associations": {
+      "*.code-workspace": "contributing",
+      "*.docker-compose.yaml": "docker",
+      "*.environment.ts": "dune",
+      "*.interceptor.ts": "nest-pipe",
+      "*.main.ts": "exe",
+      "main.ts": "exe",
+      "config.ts": "makefile",
+      "index.ts": "stitches",
+      "package.json": "npm"
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/dist": true,
+      "**/dist/config": true,
+      "**/*.code-search": true,
+      "**/tools": true
+    },
+    // * <Decorative>
+    "better-comments.tags": [
+      {
+        "tag": "!",
+        "color": "#FF2D00",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "?",
+        "color": "#3498DB",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "//",
+        "color": "#474747",
+        "strikethrough": true,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "todo",
+        "color": "#FF8C00",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "*",
+        "color": "#98C379",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      }
+    ],
+    // * </Decorative>
+    "typescript.tsdk": "node_modules/typescript/lib"
+  }
+}
