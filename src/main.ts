@@ -86,7 +86,7 @@ export class ABBCli {
     this.fetch.BASE_URL = base;
   }
 
-  public async exec(value?: string): Promise<void> {
+  public async exec(): Promise<void> {
     this.application.setHeader("ABB CLI");
     const recent: string[] = (await this.cache.get<string[]>(RECENT_SEARCHES)) ?? [];
 
@@ -108,23 +108,26 @@ export class ABBCli {
       right: [{ entry: ["Search", "search"] }],
       rightHeader: "Commands",
       showHeaders: true,
-      value,
+      restore: {
+        id: "ABB_CLI_MAIN",
+        type: "value",
+      },
     });
     switch (action) {
       case "clear-recent":
         await this.cache.set(RECENT_SEARCHES, []);
-        return await this.exec(action);
+        return await this.exec();
       case "done":
         return;
       case "search":
         await this.search();
-        return await this.exec(action);
+        return await this.exec();
       case "clear-cache":
         await this.clearCache();
-        return await this.exec(value);
+        return await this.exec();
       default:
         await this.search(action);
-        return await this.exec(action);
+        return await this.exec();
     }
   }
 
@@ -204,7 +207,7 @@ export class ABBCli {
     return out;
   }
 
-  protected async lookup(id: string, book?: AudioBook, defaultAction?: string): Promise<void> {
+  protected async lookup(id: string, book?: AudioBook): Promise<void> {
     if (!book) {
       this.application.setHeader("Lookup");
       book = await this.getBook(id);
@@ -236,7 +239,12 @@ export class ABBCli {
         { entry: ["See Description", "description"] },
         { entry: ["Create Magnet", "magnet"] },
       ],
-      value: defaultAction,
+      condensed: true,
+      hideSearch: true,
+      restore: {
+        id: "ABB_CLI_LOOKUP",
+        type: "value",
+      },
     });
     switch (action) {
       case "magnet":
@@ -266,7 +274,7 @@ export class ABBCli {
         break;
     }
 
-    await this.lookup(id, book, action);
+    await this.lookup(id, book);
   }
 
   protected async runSearch(query: string): Promise<BookListItem[]> {
