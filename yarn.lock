@@ -251,22 +251,21 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.3.0.tgz#0ec9264cf54a527671d990eb874e030b55b70dcc"
   integrity sha512-CX6t4SYQ37lzxicAqsBtxA3OseeoVrh9cSJ5PFYam0GksYlupRfy1A+Q4aYD3zvcfECLc0zO2u+ZnR2UYKvCrw==
 
-"@steggy/boilerplate@22.52.5", "@steggy/boilerplate@^22.52.5":
-  version "22.52.5"
-  resolved "https://registry.yarnpkg.com/@steggy/boilerplate/-/boilerplate-22.52.5.tgz#5976237fd17227d870e961fe9f022e73e20eeea1"
-  integrity sha512-FX27V3GLygY6P7SRwCH7lwG5pPHF2QumjOv67+CTtrURn3Etn87W/XAAP+U9Sh9gzdkV58DN7nfJ4oaD8G6yyQ==
+"@steggy/boilerplate@22.52.6", "@steggy/boilerplate@^22.52.6":
+  version "22.52.6"
+  resolved "https://registry.yarnpkg.com/@steggy/boilerplate/-/boilerplate-22.52.6.tgz#da8216775aed84a1700a2fc1a5ae4b724d896684"
+  integrity sha512-WMp7K10pfHHBDzC3x2BCvFybFHXfDPsYXwQFUxtPhuLnpQx+Eqk4w7fFsv+f9+nc+1l02At50D2SGIZ833mszg==
 
-"@steggy/config-builder@^22.52.5":
-  version "22.52.5"
-  resolved "https://registry.yarnpkg.com/@steggy/config-builder/-/config-builder-22.52.5.tgz#9fb192f6e432e11e16f9f5986513add11c318593"
-  integrity sha512-6iAdKADEIZgOFZ98XCMjWIU4WpyQYay59iW/4zTW//sj/iwy2KN0Z72e49lPFF6UZRPJpxwP3AJt86RPo6J70w==
+"@steggy/config-builder@^22.52.6":
+  version "22.52.6"
+  resolved "https://registry.yarnpkg.com/@steggy/config-builder/-/config-builder-22.52.6.tgz#840a3ab21741b524ff467130311b9499c4e67c40"
+  integrity sha512-PDHKuLiOACQPOZPO/TlwVreu3T0DzDGZARBmj3tvoE/8I0Sjgvxqebgrvd1Wp9XFaicxsOonzxhW9aQSm97upw==
   dependencies:
     "@nestjs/common" "9.2.1"
     "@nestjs/core" "9.2.1"
     "@nestjs/platform-express" "9.2.1"
     bottleneck "2.19.5"
     cache-manager "4.1.0"
-    cache-manager-redis-store "2.0.0"
     chalk "4.1.2"
     chrono-node "2.4.2"
     class-transformer "0.5.1"
@@ -293,19 +292,18 @@
     tslib "2.4.1"
     uuid "9.0.0"
 
-"@steggy/tty@^22.52.5":
-  version "22.52.5"
-  resolved "https://registry.yarnpkg.com/@steggy/tty/-/tty-22.52.5.tgz#bb3419416eef6fc0776e6abfb2d83d769bd83cd8"
-  integrity sha512-y3OLx6GzoetcIQjYdDLybk5XzodtyfyPQIDtLJLSuNXAPNY+nmqx8vAyWb/BWTPXwMHAsqyBvGmItzQrkcIY0Q==
+"@steggy/tty@^22.52.6":
+  version "22.52.6"
+  resolved "https://registry.yarnpkg.com/@steggy/tty/-/tty-22.52.6.tgz#4cedb14fef604d873738502633a334ac3cb9b8cb"
+  integrity sha512-B/dPjNfqS3EhANKaSYdINxpbjheyqKwDdnKDVBC01FMDm4SBaLpd+A1o2hpcp6JMTmsRQNI/kY9Mu7ymtVoYnw==
   dependencies:
     "@nestjs/common" "9.2.1"
     "@nestjs/core" "9.2.1"
     "@nestjs/platform-express" "9.2.1"
-    "@steggy/boilerplate" "22.52.5"
-    "@steggy/utilities" "22.52.5"
+    "@steggy/boilerplate" "22.52.6"
+    "@steggy/utilities" "22.52.6"
     bottleneck "2.19.5"
     cache-manager "4.1.0"
-    cache-manager-redis-store "2.0.0"
     chalk "4.1.2"
     chrono-node "2.4.2"
     class-transformer "0.5.1"
@@ -332,10 +330,10 @@
     tslib "2.4.1"
     uuid "9.0.0"
 
-"@steggy/utilities@22.52.5", "@steggy/utilities@^22.52.5":
-  version "22.52.5"
-  resolved "https://registry.yarnpkg.com/@steggy/utilities/-/utilities-22.52.5.tgz#985f91f059de371950688b22f426e0b0b7205567"
-  integrity sha512-C+GlgGpdHGDIRQxJYJyaRsc8wmYDhH9QA0uQAcLSUTltqwql0oce68PyO/cRJdYQ2MG9ikH8FUbNIu0oUk0t2w==
+"@steggy/utilities@22.52.6", "@steggy/utilities@^22.52.6":
+  version "22.52.6"
+  resolved "https://registry.yarnpkg.com/@steggy/utilities/-/utilities-22.52.6.tgz#f9ddd3b45d5b22f22e17390c0ab0f8b32e35ec92"
+  integrity sha512-TtGNuspu0RWRUvZ12LfFwL5OIcDR2Hh+Hg0hT8R4Z+DhstcE7bnB58+7Qgiu/ZQo0Wm3yavSmqevbNs/IaG1YA==
   dependencies:
     class-transformer "0.5.1"
     tslib "2.4.1"
@@ -3754,9 +3752,9 @@ quickscript@./:
     "@nestjs/common" "^9.2.1"
     "@nestjs/core" "9.2.1"
     "@nestjs/platform-express" "9.2.1"
-    "@steggy/boilerplate" "^22.52.5"
-    "@steggy/tty" "^22.52.5"
-    "@steggy/utilities" "^22.52.5"
+    "@steggy/boilerplate" "^22.52.6"
+    "@steggy/tty" "^22.52.6"
+    "@steggy/utilities" "^22.52.6"
     async "^3.2.4"
     bottleneck "2.19.5"
     cache-manager "4.1.0"

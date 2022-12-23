@@ -1,10 +1,4 @@
-import {
-  CacheManagerService,
-  FetchService,
-  InjectCache,
-  InjectConfig,
-  QuickScript,
-} from "@steggy/boilerplate";
+import { CacheService, FetchService, InjectConfig, QuickScript } from "@steggy/boilerplate";
 import {
   ansiEscapes,
   ansiStrip,
@@ -40,6 +34,9 @@ import { AudioBook, AudioBookRelated, BookListItem, Pagination } from "./types";
 const SEARCH_RESULTS = (text: string) => `SEARCH_RESULT:${is.hash(text)}`;
 const BOOK_CACHE = (text: string) => `BOOK_CACHE:${is.hash(text)}`;
 const RECENT_SEARCHES = "RECENT_SEARCHES";
+/**
+ * non-breaking space
+ */
 const NBSP = 160;
 const CACHE_CLEAR_PACE = 50;
 
@@ -56,8 +53,7 @@ export class ABBCli {
       type: "string",
     })
     readonly base: string,
-    @InjectCache()
-    private readonly cache: CacheManagerService,
+    private readonly cache: CacheService,
     private readonly environment: EnvironmentService,
     private readonly fetch: FetchService,
     @InjectConfig("LIMIT", {
@@ -88,7 +84,7 @@ export class ABBCli {
 
   public async exec(): Promise<void> {
     this.application.setHeader("ABB CLI");
-    const recent: string[] = (await this.cache.get<string[]>(RECENT_SEARCHES)) ?? [];
+    const recent = await this.cache.get<string[]>(RECENT_SEARCHES, []);
 
     const action = await this.prompt.menu({
       hideSearch: true,
@@ -141,12 +137,12 @@ export class ABBCli {
     }
 
     // * Append search to list of recent search
-    const recent = (await this.cache.get<string[]>(RECENT_SEARCHES)) ?? [];
+    const recent = await this.cache.get<string[]>(RECENT_SEARCHES, []);
     await this.cache.set(RECENT_SEARCHES, [...recent, text]);
 
     // * Check to see if result is cached
     const resultKey = SEARCH_RESULTS(text);
-    const cached = await this.cache.get<BookListItem[]>(resultKey);
+    const cached = await this.cache.get<BookListItem[]>(resultKey, []);
 
     // * execute search + cache
     const books = cached ?? (await this.runSearch(text));
@@ -413,7 +409,6 @@ export class ABBCli {
           .split("Language:")[0]
           .replace("Category:", "")
           .trim()
-          // non-breaking space
           .split(String.fromCodePoint(NBSP))
           .map((text: string) => text.trim()),
         cover: cover === "/images/default_cover.jpg" ? "http://audiobookbay.se" + cover : cover,
@@ -476,8 +471,8 @@ export class ABBCli {
    */
   private async clearCache(): Promise<void> {
     const keys = [
-      ...(await this.cache.store.keys("SEARCH_RESULT*")),
-      ...(await this.cache.store.keys("BOOK_CACHE*")),
+      ...(await this.cache.keys("SEARCH_RESULT*")),
+      ...(await this.cache.keys("BOOK_CACHE*")),
     ];
     await this.cache.del("LAST_SEARCH");
     await this.cache.del("RECENT_SEARCHES");
