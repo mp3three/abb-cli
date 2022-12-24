@@ -19,9 +19,9 @@
     "@nestjs/common": "^9.2.1",
     "@nestjs/core": "9.2.1",
     "@nestjs/platform-express": "9.2.1",
-    "@steggy/boilerplate": "^22.52.6",
-    "@steggy/tty": "^22.52.6",
-    "@steggy/utilities": "^22.52.6",
+    "@steggy/boilerplate": "^22.52.9",
+    "@steggy/tty": "^22.52.9",
+    "@steggy/utilities": "^22.52.9",
     "async": "^3.2.4",
     "bottleneck": "2.19.5",
     "cache-manager": "4.1.0",
@@ -50,7 +50,7 @@
     "uuid": "9.0.0"
   },
   "devDependencies": {
-    "@steggy/config-builder": "^22.52.6",
+    "@steggy/config-builder": "^22.52.9",
     "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "5.46.1",

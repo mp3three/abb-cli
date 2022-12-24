@@ -4,6 +4,7 @@ import {
   ansiStrip,
   ApplicationManagerService,
   EnvironmentService,
+  ErrorService,
   MainMenuEntry,
   PromptService,
   ScreenService,
@@ -31,6 +32,7 @@ import execa from "execa";
 
 import { AudioBook, AudioBookRelated, BookListItem, Pagination } from "./types";
 
+type MainMenuResult = string | { search: string };
 const SEARCH_RESULTS = (text: string) => `SEARCH_RESULT:${is.hash(text)}`;
 const BOOK_CACHE = (text: string) => `BOOK_CACHE:${is.hash(text)}`;
 const RECENT_SEARCHES = "RECENT_SEARCHES";
@@ -46,16 +48,17 @@ const CACHE_CLEAR_PACE = 50;
 })
 export class ABBCli {
   constructor(
-    private readonly application: ApplicationManagerService,
     @InjectConfig("BASE", {
       default: "http://audiobookbay.fi",
       description: "Page target to pull information from",
       type: "string",
     })
     readonly base: string,
-    private readonly cache: CacheService,
-    private readonly environment: EnvironmentService,
-    private readonly fetch: FetchService,
+    @InjectConfig("LAUNCH", {
+      description: "Target that can accept magnet links (ex: transmission-remote-gtk)",
+      type: "string",
+    })
+    private readonly launch: string,
     @InjectConfig("LIMIT", {
       default: 5,
       description:
@@ -63,21 +66,21 @@ export class ABBCli {
       type: "number",
     })
     private readonly limit: number,
-    @InjectConfig("LAUNCH", {
-      description: "Target that can accept magnet links (ex: transmission-remote-gtk)",
-      type: "string",
-    })
-    private readonly launch: string,
-    private readonly logger: SyncLoggerService,
-    private readonly prompt: PromptService,
     @InjectConfig("RECENT", {
       default: 50,
       description: "How many recent searches to show",
       type: "number",
     })
     private readonly recent: number,
-    private readonly screen: ScreenService,
+    private readonly application: ApplicationManagerService,
+    private readonly cache: CacheService,
+    private readonly environment: EnvironmentService,
+    private readonly error: ErrorService,
+    private readonly fetch: FetchService,
+    private readonly logger: SyncLoggerService,
+    private readonly prompt: PromptService,
     private readonly rendering: TextRenderingService,
+    private readonly screen: ScreenService,
   ) {
     this.fetch.BASE_URL = base;
   }
@@ -86,33 +89,42 @@ export class ABBCli {
     this.application.setHeader("ABB CLI");
     const recent = await this.cache.get<string[]>(RECENT_SEARCHES, []);
 
-    const action = await this.prompt.menu({
+    const action = await this.prompt.menu<MainMenuResult>({
       hideSearch: true,
+      condensed: true,
       keyMap: {
         escape: ["done"],
-        f12: ["clear cache", "clear-cache"],
-        f4: ["clear recent searches", "clear-recent"],
-        s: ["search"],
+        c: {
+          entry: ["clear cache", "clear-cache"],
+          highlight: "auto",
+        },
+        s: {
+          entry: ["search"],
+          highlight: "auto",
+        },
       },
       left: is
         .unique(recent)
         .reverse()
         .filter(index => !is.empty(index))
         .slice(START, this.recent)
-        .map(index => ({ entry: [index, index] })),
+        .map(search => ({ entry: [search, { search }] })),
       leftHeader: "Recent Searches",
-      right: [{ entry: ["Search", "search"] }],
-      rightHeader: "Commands",
+      right: [
+        {
+          entry: ["search"],
+          helpText: "Execute a new search",
+        },
+        { entry: ["clear cache", "clear-cache"] },
+      ],
+      rightHeader: "Actions",
       showHeaders: true,
       restore: {
-        id: "ABB_CLI_MAIN",
+        id: "main_menu",
         type: "value",
       },
     });
     switch (action) {
-      case "clear-recent":
-        await this.cache.set(RECENT_SEARCHES, []);
-        return await this.exec();
       case "done":
         return;
       case "search":
@@ -121,15 +133,22 @@ export class ABBCli {
       case "clear-cache":
         await this.clearCache();
         return await this.exec();
-      default:
-        await this.search(action);
-        return await this.exec();
     }
+    if (is.string(action)) {
+      await this.error.menuError();
+      return;
+    }
+    if ("search" in action) {
+      await this.search(action.search);
+    } else {
+      await this.error.menuError();
+      return;
+    }
+    await this.exec();
   }
 
   public async search(text?: string, lastValue?: string): Promise<void> {
-    const headerText = `Audiobook Search`;
-    this.application.setHeader(headerText);
+    this.application.setHeader(`Audiobook Search`);
     // * Prompt for search text
     text ??= (await this.prompt.string({ label: "Search text" })).toLocaleLowerCase();
     if (is.empty(text)) {
@@ -142,14 +161,14 @@ export class ABBCli {
 
     // * Check to see if result is cached
     const resultKey = SEARCH_RESULTS(text);
-    const cached = await this.cache.get<BookListItem[]>(resultKey, []);
+    const cached = await this.cache.get<BookListItem[]>(resultKey);
 
     // * execute search + cache
     const books = cached ?? (await this.runSearch(text));
     await this.cache.set(resultKey, books);
 
     // ? Clear off logs
-    this.application.setHeader(headerText);
+    this.application.reprintHeader();
 
     // ? Max length of labels is 2/3 of terminal width
     // Some titles can have a list of authors or narrators attached, and be unnecessarily long
@@ -238,7 +257,7 @@ export class ABBCli {
       condensed: true,
       hideSearch: true,
       restore: {
-        id: "ABB_CLI_LOOKUP",
+        id: `lookup_${id}`,
         type: "value",
       },
     });
@@ -268,8 +287,10 @@ export class ABBCli {
         );
         await this.prompt.acknowledge();
         break;
+      default:
+        await this.error.menuError();
+        return;
     }
-
     await this.lookup(id, book);
   }
 
